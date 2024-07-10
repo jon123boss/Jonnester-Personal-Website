@@ -65,6 +65,12 @@
             border-bottom: 2px solid #2575fc;
             display: inline-block;
             padding-bottom: 5px;
+            animation: titleEffect 1s ease-in-out;
+        }
+
+        @keyframes titleEffect {
+            0% { color: #fff; border-bottom-color: #fff; }
+            100% { color: #2575fc; border-bottom-color: #2575fc; }
         }
 
         .projects ul {
@@ -73,6 +79,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            overflow: hidden;
         }
 
         .projects li {
@@ -82,8 +89,15 @@
             padding: 20px;
             border-radius: 15px;
             border: 2px solid #2575fc;
-            transition: transform 0.3s;
+            transition: transform 0.5s, opacity 0.5s;
             flex: 0 1 calc(33.33% - 20px);
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        .projects li.in-view {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .projects li:hover {
@@ -115,7 +129,7 @@
             margin: 0;
             color: #fff;
             position: relative;
-            overflow: hidden;
+            transition: opacity 0.5s;
         }
 
         .hero h1 span {
@@ -125,7 +139,7 @@
 
         @keyframes wave {
             0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(40deg); }
+            25% { transform: rotate(20deg); }
             50% { transform: rotate(-10deg); }
             75% { transform: rotate(20deg); }
         }
@@ -134,9 +148,9 @@
             position: absolute;
             bottom: 60px;
             left: 50%;
-            transform: translateX(-100%);
+            transform: translateX(-50%);
             font-size: 2em;
-            animation: bounce 2s infinite;
+            animation: bounce 2s infinite, fadeText 10s infinite;
             z-index: 1001;
         }
 
@@ -144,6 +158,11 @@
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-40px); }
             60% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .starry-background {
@@ -182,6 +201,24 @@
         .contact-button:hover {
             background-color: #6a11cb;
         }
+
+        .about-me-box {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            border: 2px solid #2575fc;
+            border-radius: 15px;
+            margin: 20px 0;
+            background-color: #fff;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .about-me-box.in-view {
+            opacity: 1;
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body>
@@ -189,7 +226,7 @@
 
 <div class="hero">
     <div>
-        <h1>Hi, I'm Jonathan Su</h1>
+        <h1 class="hero-text">Hi, I'm Jonathan Su</h1>
         <p>Scroll down 😊</p>
         <div class="scroll-down">↓</div>
     </div>
@@ -208,7 +245,9 @@
 <main>
     <section id="about">
         <h2>About Me</h2>
-        <p>Hi, my name is Jonathan and I'm a student. I'm passionate about coding and machine learning.</p>
+        <div class="about-me-box">
+            <p>Hi, my name is Jonathan and I'm a student currently studying in German Swiss International School in Hong Kong. I'm passionate about coding, chess, and machine learning. I hope to meet new awesome and cool people.</p>
+        </div>
     </section>
 
     <section id="projects" class="projects">
@@ -242,6 +281,32 @@
     window.addEventListener('scroll', function() {
         const scrollPosition = window.scrollY;
         document.querySelector('.starry-background').style.transform = `translate(-${scrollPosition / 5}px, -${scrollPosition / 5}px)`;
+
+        const heroText = document.querySelector('.hero-text');
+        if (scrollPosition > 50) {
+            heroText.style.opacity = '0';
+        } else {
+            heroText.style.opacity = '1';
+        }
+
+        const projectItems = document.querySelectorAll('.projects li');
+        const aboutMeBox = document.querySelector('.about-me-box');
+
+        projectItems.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                item.classList.add('in-view');
+            } else {
+                item.classList.remove('in-view');
+            }
+        });
+
+        const aboutRect = aboutMeBox.getBoundingClientRect();
+        if (aboutRect.top < window.innerHeight && aboutRect.bottom >= 0) {
+            aboutMeBox.classList.add('in-view');
+        } else {
+            aboutMeBox.classList.remove('in-view');
+        }
     });
 
     document.addEventListener('DOMContentLoaded', function() {
