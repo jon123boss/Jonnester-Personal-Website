@@ -11,8 +11,10 @@
             margin: 0;
             padding: 0;
             color: #333;
-            background-color: #f4f4f9;
+            background-color: #000;
+            overflow-x: hidden;
             scroll-behavior: smooth;
+            height: 200vh; /* Ensure enough scroll space to see the effect */
         }
 
         header {
@@ -52,7 +54,6 @@
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
-            background: linear-gradient(180deg, #f4f4f9, #000);
         }
 
         section {
@@ -76,7 +77,13 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 15px;
+            border: 2px solid #2575fc;
+            transition: transform 0.3s;
+        }
+
+        .projects li:hover {
+            transform: scale(1.05);
         }
 
         .projects h3 {
@@ -133,27 +140,15 @@
             color: #fff;
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
         .hero h1 {
-            font-size: 3em;
+            font-size: 4em;
             margin: 0;
-            display: inline-block;
-            background: linear-gradient(90deg, #fff, #f4f4f9, #fff);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: sheen 3s linear infinite;
-        }
-
-        .hero p {
-            font-size: 2em;
-            margin: 10px 0 0;
-        }
-
-        @keyframes sheen {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+            color: #fff;
+            position: relative;
+            overflow: hidden;
         }
 
         .scroll-down {
@@ -171,35 +166,46 @@
             60% { transform: translateY(-5px); }
         }
 
-        body::after {
-            content: '';
+        .starry-background {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.solarsystemscope.com/textures/download/8k_stars_milky_way.jpg') no-repeat center center/cover;
+            width: 200%;
+            height: 200%;
+            background: url('https://www.solarsystemscope.com/textures/download/8k_stars_milky_way.jpg') repeat;
+            background-size: cover;
             z-index: -1;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
         }
 
-        body.scrolled::after {
-            opacity: 1;
+        @keyframes cyanSheen {
+            0% { background-position: -500px; }
+            100% { background-position: 500px; }
+        }
+
+        .sheen {
+            display: inline-block;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            background-size: 500px;
+            position: relative;
+            animation: cyanSheen 2s infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: cyan; /* Keep the text color as cyan */
         }
     </style>
 </head>
 <body>
+<div class="starry-background"></div>
+
 <div class="hero">
     <div>
-        <h1>Hi, I'm Jonathan 👋</h1>
+        <h1 class="sheen">Hi, I'm Jonathan 👋</h1>
         <p>Scroll down</p>
         <div class="scroll-down">↓</div>
     </div>
 </div>
 
 <header>
-    <h1>My Personal Portfolio</h1>
+    <h1>Jonathan's Personal Portfolio</h1>
 </header>
 
 <nav>
@@ -255,7 +261,8 @@
 
 <script>
     window.addEventListener('scroll', function() {
-        document.body.classList.toggle('scrolled', window.scrollY > 0);
+        const scrollPosition = window.scrollY;
+        document.querySelector('.starry-background').style.transform = `translate(-${scrollPosition / 5}px, -${scrollPosition / 5}px)`;
     });
 </script>
 </body>
