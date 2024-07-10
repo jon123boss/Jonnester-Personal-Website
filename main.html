@@ -1,45 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Personal Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS styles go here */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
+            color: #333;
+            background-color: #f4f4f9;
         }
 
         header {
-            background-color: #333;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
             color: #fff;
             padding: 20px;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         nav {
-            background-color: #f2f2f2;
-            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
             text-align: center;
+            position: sticky;
+            top: 60px;
+            z-index: 1000;
         }
 
         nav a {
             color: #333;
             text-decoration: none;
-            padding: 10px;
-            margin: 5px;
+            padding: 10px 15px;
+            margin: 0 10px;
+            font-weight: 500;
         }
 
         nav a:hover {
-            background-color: #333;
-            color: #fff;
+            color: #2575fc;
+            border-bottom: 2px solid #2575fc;
         }
 
         main {
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         section {
@@ -47,14 +58,70 @@
         }
 
         h2 {
-            color: #333;
+            color: #2575fc;
+            border-bottom: 2px solid #2575fc;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .projects ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .projects li {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .projects h3 {
+            margin-top: 0;
         }
 
         footer {
             background-color: #333;
             color: #fff;
-            padding: 10px;
+            padding: 20px;
             text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #2575fc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #6a11cb;
         }
     </style>
 </head>
@@ -72,10 +139,10 @@
 <main>
     <section id="about">
         <h2>About Me</h2>
-        <p>Hi, my name is Jonathan and I'm a Student. I'm passionate about Coding and Machine learning.</p>
+        <p>Hi, my name is Jonathan and I'm a student. I'm passionate about coding and machine learning.</p>
     </section>
 
-    <section id="projects">
+    <section id="projects" class="projects">
         <h2>My Projects</h2>
         <ul>
             <li>
@@ -111,10 +178,7 @@
 </main>
 
 <footer>
-
     <p>&copy; 2024 Jonathan Su. All rights reserved.</p>
-
 </footer>
 </body>
 </html>
-
