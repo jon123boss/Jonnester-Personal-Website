@@ -413,22 +413,27 @@
             const mouseX = e.pageX;
             const mouseY = e.pageY;
 
-            const heroText = document.querySelector('.hero-text');
-            const heroTextRect = heroText.getBoundingClientRect();
-            const minDistance = 5;
-
-            if (
-                mouseX >= heroTextRect.left - minDistance &&
-                mouseX <= heroTextRect.right + minDistance &&
-                mouseY >= heroTextRect.top - minDistance &&
-                mouseY <= heroTextRect.bottom + minDistance
-            ) {
-                return;
-            }
-
             createParticle(mouseX, mouseY);
         });
+
+        heroSection.addEventListener('mousemove', (e) => {
+            const rect = heroSection.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const deltaX = x - centerX;
+            const deltaY = y - centerY;
+            const angleX = deltaY / -20;
+            const angleY = -deltaX / -20;
+
+            const heroText = document.querySelector('.hero h1');
+            heroText.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+        });
     });
+
+
 </script>
 </body>
 </html>
