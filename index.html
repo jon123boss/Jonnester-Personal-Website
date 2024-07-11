@@ -61,17 +61,19 @@
         }
 
         h2 {
-            color: #2575fc;
-            border-bottom: 2px solid #2575fc;
-            display: inline-block;
-            padding-bottom: 5px;
-            animation: titleEffect 1s ease-in-out;
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1rem, 3vw, 3rem);
+            color: white;
+            padding: 0rem clamp(1rem, 2vw, 3rem);
+            border-radius: clamp(0.4rem, 0.75vw, 1rem);
         }
 
-        @keyframes titleEffect {
-            0% { color: #fff; border-bottom-color: #fff; }
-            100% { color: #2575fc; border-bottom-color: #2575fc; }
+        h2:hover {
+            background-color: white;
+            color: black;
         }
+
+
 
         .projects {
             overflow: hidden;
@@ -135,13 +137,20 @@
             font-size: 4em;
             margin: 0;
             color: #fff;
-            position: relative;
+            position: center;
             transition: opacity 0.5s;
+            transition: all 0.1s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.2), 3px 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero h1:hover {
+            color: rgba(0, 255, 255, 0.9);
+            font-size: 4.5em;
         }
 
         .hero h1 span {
             display: inline-block;
-            animation: wave 2s ease-in-out;
+            animation: wave 2s ease-in-out infinite;
         }
 
         @keyframes wave {
@@ -249,7 +258,7 @@
 
         .hero .particle {
             position: absolute;
-            background-color: rgba(0, 200, 255, 0.7); /* Purple color with opacity */
+            background-color: rgba(0, 150, 255, 0.3);
             width: 30px;
             height: 30px;
             border-radius: 50%;
@@ -276,7 +285,7 @@
 
 <div class="hero">
     <div>
-        <h1 class="hero-text">Hi, I'm Jonathan Su</h1>
+        <h1 class="hero-text">Hello, I'm Jonathan Su</h1>
         <p>Scroll down 😊</p>
         <div class="particle-container" id="hero-particle-container"></div> <!-- Container for particles -->
         <div class="scroll-down">↓</div>
@@ -295,7 +304,7 @@
 <main>
     <section id="about">
         <div class="center-content">
-            <h2>About Me</h2>
+            <h2 data-value="About Me">About Me</h2>
             <div class="about-me-box">
                 <p>Hi, my name is Jonathan and I'm a student currently studying in German Swiss International School in Hong Kong. I'm passionate about coding, chess, and machine learning. I hope to meet new awesome and cool people.</p>
             </div>
@@ -425,13 +434,42 @@
 
             const deltaX = x - centerX;
             const deltaY = y - centerY;
-            const angleX = deltaY / -20;
-            const angleY = -deltaX / -20;
+            const angleX = deltaY / -40;
+            const angleY = -deltaX / -40;
 
             const heroText = document.querySelector('.hero h1');
             heroText.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
         });
     });
+
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    let interval = null;
+
+    document.querySelector("h2").onmouseover = event => {
+        let iteration = 0;
+
+        clearInterval(interval);
+
+        interval = setInterval(() => {
+            event.target.innerText = event.target.innerText
+                .split("")
+                .map((letter, index) => {
+                    if(index < iteration) {
+                        return event.target.dataset.value[index];
+                    }
+
+                    return letters[Math.floor(Math.random() * 26)]
+                })
+                .join("");
+
+            if(iteration >= event.target.dataset.value.length){
+                clearInterval(interval);
+            }
+
+            iteration += 1 / 2;
+        }, 30);
+    }
 
 
 </script>
