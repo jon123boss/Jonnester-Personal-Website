@@ -235,6 +235,40 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        #hero-particle-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 100px;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .hero .particle {
+            position: absolute;
+            background-color: rgba(0, 200, 255, 0.7); /* Purple color with opacity */
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleAnimation 3s forwards;
+            transform-origin: center;
+        }
+
+        @keyframes particleAnimation {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -244,10 +278,10 @@
     <div>
         <h1 class="hero-text">Hi, I'm Jonathan Su</h1>
         <p>Scroll down 😊</p>
+        <div class="particle-container" id="hero-particle-container"></div> <!-- Container for particles -->
         <div class="scroll-down">↓</div>
     </div>
 </div>
-
 <header>
     <h1>Jonathan's Personal Portfolio</h1>
 </header>
@@ -305,14 +339,12 @@
         });
         projectItems[currentIndex].classList.add('active');
 
-        // Center the active project
         const projectsUl = document.querySelector('.projects ul');
         const activeProject = projectItems[currentIndex];
         const activeProjectRect = activeProject.getBoundingClientRect();
         const ulRect = projectsUl.getBoundingClientRect();
         const offset = activeProjectRect.left - ulRect.left + (activeProjectRect.width / 2) - (window.innerWidth / 2);
 
-        // Prevent the offset from making the list go out of bounds
         const maxOffset = projectsUl.scrollWidth - window.innerWidth;
         const limitedOffset = Math.max(0, Math.min(offset, maxOffset));
 
@@ -354,6 +386,48 @@
         handWave.textContent = '👋';
         handWave.classList.add('wave');
         document.querySelector('.hero h1').appendChild(handWave);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const particleContainer = document.getElementById('hero-particle-container');
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+
+            const containerRect = particleContainer.getBoundingClientRect();
+            const particleX = x - containerRect.left;
+            const particleY = y - containerRect.top;
+
+            particle.style.left = `${particleX-15}px`;
+            particle.style.top = `${particleY-15}px`;
+            particleContainer.appendChild(particle);
+
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+            });
+        }
+
+        const heroSection = document.querySelector('.hero');
+        heroSection.addEventListener('mousemove', function(e) {
+            const mouseX = e.pageX;
+            const mouseY = e.pageY;
+
+            const heroText = document.querySelector('.hero-text');
+            const heroTextRect = heroText.getBoundingClientRect();
+            const minDistance = 5;
+
+            if (
+                mouseX >= heroTextRect.left - minDistance &&
+                mouseX <= heroTextRect.right + minDistance &&
+                mouseY >= heroTextRect.top - minDistance &&
+                mouseY <= heroTextRect.bottom + minDistance
+            ) {
+                return;
+            }
+
+            createParticle(mouseX, mouseY);
+        });
     });
 </script>
 </body>
