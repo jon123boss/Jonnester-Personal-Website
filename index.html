@@ -20,7 +20,7 @@
         header {
             background: linear-gradient(45deg, #6a11cb, #2575fc);
             color: #fff;
-            padding: 20px;
+            padding: 10px;
             text-align: center;
             position: sticky;
             top: 0;
@@ -33,7 +33,7 @@
             padding: 10px 0;
             text-align: center;
             position: sticky;
-            top: 0;
+            top: 1;
             z-index: 999;
         }
 
@@ -73,6 +73,12 @@
             color: black;
         }
 
+        p {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.5rem, 1.5vw, 1.5rem);
+            padding: 0rem clamp(1rem, 2vw, 3rem);
+        }
+
 
 
         .projects {
@@ -98,7 +104,9 @@
             margin: 10px;
             padding: 20px;
             border-radius: 15px;
-            border: 2px solid #2575fc;
+            border-width: 5px;
+            border-style: solid;
+            border-image: linear-gradient(45deg, #6a11cb, #2575fc) 1;
             transition: transform 0.5s ease, opacity 0.5s ease;
             flex: 0 1 calc(33.33% - 20px);
             opacity: 0.5;
@@ -166,7 +174,7 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 2em;
-            animation: bounce 2s infinite, fadeText 10s infinite;
+            animation: bounce 2s infinite;
             z-index: 1001;
         }
 
@@ -179,6 +187,25 @@
         @keyframes fadeText {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
+        }
+
+        .popping {
+            animation: pop 1s infinite;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.2);
+            }
+            75% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
         .starry-background {
@@ -224,14 +251,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh; /* Adjust height as needed */
+            height: 60vh;
         }
 
         .about-me-box {
             width: 100%;
             max-width: 600px;
             padding: 10px;
-            border: 5px solid #2575fc;
+            border-width: 5px;
+            border-style: solid;
+            border-image: linear-gradient(45deg, #6a11cb, #2575fc) 1;
             border-radius: 15px;
             margin: 10px 0;
             background-color: #fff;
@@ -244,6 +273,12 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        .about-me-box:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+
 
         #hero-particle-container {
             position: absolute;
@@ -286,13 +321,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            background-color: rgba(0, 0, 0, 0.5);
             overflow: auto;
             justify-content: center;
             align-items: center;
         }
 
-        /* Popup Styles */
         .popup {
             background-color: white;
             padding: 20px;
@@ -336,8 +370,8 @@
 <div class="hero">
     <div>
         <h1 class="hero-text">Hello, I'm Jonathan Su</h1>
-        <p>Scroll down 😊</p>
-        <div class="particle-container" id="hero-particle-container"></div> <!-- Container for particles -->
+        <p class="popping">Scroll down 😊</p>
+        <div class="particle-container" id="hero-particle-container"></div>
         <div class="scroll-down">↓</div>
     </div>
 </div>
@@ -363,7 +397,7 @@
 
     <section id="projects" class="projects">
         <div class="center-content">
-            <h2>My Projects</h2>
+            <h2 data-value="My Projects">My Projects</h2>
             <ul>
                 <li class="active">
                     <h3>Project 1</h3>
@@ -390,7 +424,8 @@
     <div class="popup">
         <span class="close" onclick="hideEmailPopup()">&times;</span>
         <h3>My Email Address:</h3>
-        <p>jon123boss@gmail.com</p>
+        <p id="email">jon123boss@gmail.com</p>
+        <button class="copy-button" onclick="copyEmail()">Copy Email</button>
     </div>
 </div>
 
@@ -547,6 +582,23 @@
     function hideEmailPopup() {
         const popupContainer = document.getElementById('popupContainer');
         popupContainer.style.display = 'none';
+    }
+
+    function copyEmail() {
+        const emailText = document.getElementById('email').innerText;
+
+        const textarea = document.createElement('textarea');
+        textarea.value = emailText;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+
+        textarea.select();
+        document.execCommand('copy');
+
+        document.body.removeChild(textarea);
+        alert('Email copied to clipboard!');
     }
 
 </script>
