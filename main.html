@@ -82,7 +82,8 @@
             list-style: none;
             padding: 0;
             display: flex;
-            transition: transform 0.5s;
+            transition: transform 0.5s ease;
+            will-change: transform;
         }
 
         .projects li {
@@ -92,32 +93,18 @@
             padding: 20px;
             border-radius: 15px;
             border: 2px solid #2575fc;
-            transition: transform 0.5s, opacity 0.5s;
+            transition: transform 0.5s ease, opacity 0.5s ease;
             flex: 0 1 calc(33.33% - 20px);
-            opacity: 0;
-            transform: translateX(100%);
-        }
-
-        .projects li.in-view {
-            opacity: 1;
-            transform: translateX(0);
+            opacity: 0.5;
+            transform: scale(0.8);
+            width: 300px;
+            height: 200px;
         }
 
         .projects li.active {
             flex: 1 1 60%;
             transform: scale(1.2);
             opacity: 1;
-        }
-
-        .projects li.previous,
-        .projects li.next {
-            flex: 1 1 20%;
-            transform: scale(0.8);
-            opacity: 0.5;
-        }
-
-        .projects li:hover {
-            transform: scale(1.05);
         }
 
         footer {
@@ -228,7 +215,7 @@
             background-color: #fff;
             opacity: 0;
             transform: translateX(100%);
-            transition: transform 0.5s, opacity 0.5s;
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
 
         .about-me-box.in-view {
@@ -273,11 +260,11 @@
                 <h3>Project 1</h3>
                 <p>Description of Project 1</p>
             </li>
-            <li class="next">
+            <li>
                 <h3>Project 2</h3>
                 <p>Description of Project 2</p>
             </li>
-            <li class="next">
+            <li>
                 <h3>Project 3</h3>
                 <p>Description of Project 3</p>
             </li>
@@ -294,56 +281,36 @@
 </footer>
 
 <script>
-    let currentIndex = 0;
-
     function updateProjects() {
         const projectItems = document.querySelectorAll('.projects li');
-        projectItems.forEach((item, index) => {
-            item.classList.remove('active', 'previous', 'next');
-            if (index === currentIndex) {
-                item.classList.add('active');
-            } else if (index === (currentIndex - 1 + projectItems.length) % projectItems.length) {
-                item.classList.add('previous');
-            } else if (index === (currentIndex + 1) % projectItems.length) {
-                item.classList.add('next');
-            }
+        projectItems.forEach(item => {
+            item.classList.remove('active');
         });
+        projectItems[currentIndex].classList.add('active');
     }
 
-    document.querySelector('.projects ul').addEventListener('wheel', (event) => {
-        if (event.deltaY > 0) {
-            currentIndex = (currentIndex + 1) % document.querySelectorAll('.projects li').length;
-        } else {
-            currentIndex = (currentIndex - 1 + document.querySelectorAll('.projects li').length) % document.querySelectorAll('.projects li').length;
-        }
-        updateProjects();
-    });
+    let currentIndex = 0;
+    const projectItems = document.querySelectorAll('.projects li');
 
-    updateProjects();
+    projectItems.forEach((item, index) => {
+        item.addEventListener('mouseover', () => {
+            currentIndex = index;
+            updateProjects();
+        });
+    });
 
     window.addEventListener('scroll', function() {
         const scrollPosition = window.scrollY;
         document.querySelector('.starry-background').style.transform = `translate(-${scrollPosition / 5}px, -${scrollPosition / 5}px)`;
 
         const heroText = document.querySelector('.hero-text');
-        if (scrollPosition > 70) {
+        if (scrollPosition > 50) {
             heroText.style.opacity = '0';
         } else {
             heroText.style.opacity = '1';
         }
 
-        const projectItems = document.querySelectorAll('.projects li');
         const aboutMeBox = document.querySelector('.about-me-box');
-
-        projectItems.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom >= 0) {
-                item.classList.add('in-view');
-            } else {
-                item.classList.remove('in-view');
-            }
-        });
-
         const aboutRect = aboutMeBox.getBoundingClientRect();
         if (aboutRect.top < window.innerHeight && aboutRect.bottom >= 0) {
             aboutMeBox.classList.add('in-view');
