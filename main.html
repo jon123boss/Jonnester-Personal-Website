@@ -76,6 +76,8 @@
         .projects {
             overflow: hidden;
             position: relative;
+            display: flex;
+            justify-content: center;
         }
 
         .projects ul {
@@ -84,6 +86,8 @@
             display: flex;
             transition: transform 0.5s ease;
             will-change: transform;
+            position: relative;
+            justify-content: flex-start;
         }
 
         .projects li {
@@ -102,8 +106,8 @@
         }
 
         .projects li.active {
-            flex: 1 1 60%;
-            transform: scale(1.2);
+            flex: 0 1 calc(60% - 20px);
+            transform: scale(1.0);
             opacity: 1;
         }
 
@@ -178,6 +182,7 @@
             background-size: cover;
             z-index: -1;
             animation: starsMove 200s infinite linear;
+            filter: hue-rotate(240deg); /* Added purple tint */
         }
 
         @keyframes starsMove {
@@ -203,6 +208,14 @@
 
         .contact-button:hover {
             background-color: #6a11cb;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Adjust height as needed */
         }
 
         .about-me-box {
@@ -247,28 +260,32 @@
 
 <main>
     <section id="about">
-        <h2>About Me</h2>
-        <div class="about-me-box">
-            <p>Hi, my name is Jonathan and I'm a student currently studying in German Swiss International School in Hong Kong. I'm passionate about coding, chess, and machine learning. I hope to meet new awesome and cool people.</p>
+        <div class="center-content">
+            <h2>About Me</h2>
+            <div class="about-me-box">
+                <p>Hi, my name is Jonathan and I'm a student currently studying in German Swiss International School in Hong Kong. I'm passionate about coding, chess, and machine learning. I hope to meet new awesome and cool people.</p>
+            </div>
         </div>
     </section>
 
     <section id="projects" class="projects">
-        <h2>My Projects</h2>
-        <ul>
-            <li class="active">
-                <h3>Project 1</h3>
-                <p>Description of Project 1</p>
-            </li>
-            <li>
-                <h3>Project 2</h3>
-                <p>Description of Project 2</p>
-            </li>
-            <li>
-                <h3>Project 3</h3>
-                <p>Description of Project 3</p>
-            </li>
-        </ul>
+        <div class="center-content">
+            <h2>My Projects</h2>
+            <ul>
+                <li class="active">
+                    <h3>Project 1</h3>
+                    <p>Description of Project 1</p>
+                </li>
+                <li>
+                    <h3>Project 2</h3>
+                    <p>Description of Project 2</p>
+                </li>
+                <li>
+                    <h3>Project 3</h3>
+                    <p>Description of Project 3</p>
+                </li>
+            </ul>
+        </div>
     </section>
 
     <section>
@@ -287,6 +304,19 @@
             item.classList.remove('active');
         });
         projectItems[currentIndex].classList.add('active');
+
+        // Center the active project
+        const projectsUl = document.querySelector('.projects ul');
+        const activeProject = projectItems[currentIndex];
+        const activeProjectRect = activeProject.getBoundingClientRect();
+        const ulRect = projectsUl.getBoundingClientRect();
+        const offset = activeProjectRect.left - ulRect.left + (activeProjectRect.width / 2) - (window.innerWidth / 2);
+
+        // Prevent the offset from making the list go out of bounds
+        const maxOffset = projectsUl.scrollWidth - window.innerWidth;
+        const limitedOffset = Math.max(0, Math.min(offset, maxOffset));
+
+        projectsUl.style.transform = `translateX(-${limitedOffset}px)`;
     }
 
     let currentIndex = 0;
