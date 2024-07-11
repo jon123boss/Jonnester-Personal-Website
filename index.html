@@ -57,7 +57,7 @@
         }
 
         section {
-            margin-bottom: 40px;
+            margin-bottom: 10px;
         }
 
         h2 {
@@ -230,10 +230,10 @@
         .about-me-box {
             width: 100%;
             max-width: 600px;
-            padding: 20px;
-            border: 2px solid #2575fc;
+            padding: 10px;
+            border: 5px solid #2575fc;
             border-radius: 15px;
-            margin: 20px 0;
+            margin: 10px 0;
             background-color: #fff;
             opacity: 0;
             transform: translateX(100%);
@@ -276,6 +276,56 @@
                 transform: scale(2);
                 opacity: 0;
             }
+        }
+
+        .popup-container {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            overflow: auto;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Popup Styles */
+        .popup {
+            background-color: white;
+            padding: 20px;
+            width: 300px;
+            max-width: 80%;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .popup h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        /* Close Button Styles */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #333;
         }
 
     </style>
@@ -332,9 +382,17 @@
     </section>
 
     <section>
-        <a href="#contact" class="contact-button">Contact Me</a>
+        <a href="#" class="contact-button" id="contact" onclick="showEmailPopup()"">Contact Me</a>
     </section>
 </main>
+
+<div class="popup-container" id="popupContainer">
+    <div class="popup">
+        <span class="close" onclick="hideEmailPopup()">&times;</span>
+        <h3>My Email Address:</h3>
+        <p>jon123boss@gmail.com</p>
+    </div>
+</div>
 
 <footer>
     <p>&copy; 2024 Jonathan Su. All rights reserved.</p>
@@ -367,6 +425,16 @@
         item.addEventListener('mouseover', () => {
             currentIndex = index;
             updateProjects();
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactButton = document.querySelector('.contact-button');
+
+        contactButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const contactSection = document.getElementById('contact');
+            contactSection.scrollIntoView({ behavior: 'smooth' });
         });
     });
 
@@ -471,6 +539,15 @@
         }, 30);
     }
 
+    function showEmailPopup() {
+        const popupContainer = document.getElementById('popupContainer');
+        popupContainer.style.display = 'flex';
+    }
+
+    function hideEmailPopup() {
+        const popupContainer = document.getElementById('popupContainer');
+        popupContainer.style.display = 'none';
+    }
 
 </script>
 </body>
